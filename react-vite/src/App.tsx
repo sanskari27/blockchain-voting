@@ -4,17 +4,25 @@ import './App.css';
 import { NAVIGATION } from './config/const';
 
 import { Flex, Progress } from '@chakra-ui/react';
+import Admin from './views/pages/admin';
+import Home from './views/pages/home';
+import Login from './views/pages/login';
+import Logout from './views/pages/logout';
+import Vote from './views/pages/vote';
 
 // const Home = lazy(() => import('./views/pages/home'));
 
 function App() {
 	return (
-		<Flex minHeight={'100vh'} width={'100vw'} className='bg-background '>
+		<Flex minHeight={'100vh'} width={'100vw'} className='bg-background text-white'>
 			<Router>
 				<Suspense fallback={<Loading />}>
 					<Routes>
-						<Route path={NAVIGATION.LOGIN} element={<>LOGIN</>} />
-						<Route path={NAVIGATION.HOME} element={<>HOME</>}></Route>
+						<Route path={NAVIGATION.LOGIN} element={<Login />} />
+						<Route path={NAVIGATION.HOME} element={<Home />} />
+						<Route path={NAVIGATION.ADMIN} element={<Admin />} />
+						<Route path={NAVIGATION.VOTE} element={<Vote />} />
+						<Route path={NAVIGATION.LOGOUT} element={<Logout />} />
 						{/* <Route path='*' element={<PageNotFound />} /> */}
 					</Routes>
 				</Suspense>

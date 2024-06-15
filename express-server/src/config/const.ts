@@ -11,22 +11,11 @@ export const REFRESH_SECRET = process.env.REFRESH_SECRET ?? 'refresh-secret';
 export const REFRESH_EXPIRE = process.env.REFRESH_EXPIRE ?? '28days';
 export const SESSION_EXPIRE_TIME = 28 * 24 * 60 * 60;
 
-export const COOKIE_DOMAIN_VALUE = process.env.COOKIE_DOMAIN_VALUE ?? 'localhost';
-
-export const RESEND_API_KEY = process.env.RESEND_API_KEY ?? 'RESEND_API_KEY';
-
 export enum Cookie {
 	Auth = 'auth-cookie',
 	Refresh = 'refresh-cookie',
-}
-export enum UserLevel {
-	User = 1,
-	Admin = 10,
 }
 
 export enum Path {
 	Misc = '/static/misc/',
 }
-
-export const CACHE_TIMEOUT = 60 * 60; //seconds
-export const REFRESH_CACHE_TIMEOUT = 30 * 24 * 60 * 60; //seconds

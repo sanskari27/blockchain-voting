@@ -1,18 +1,13 @@
 import { randomBytes, scrypt } from 'crypto';
+import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import { JWT_EXPIRE, JWT_SECRET, REFRESH_EXPIRE, REFRESH_SECRET } from '../../src/config/const';
 import IAccount from '../types/account';
 
 export const AccountDB_name = 'Account';
 
 const schema = new mongoose.Schema<IAccount>({
-	name: {
-		type: String,
-	},
-	phone: {
-		type: String,
-		unique: true,
-	},
-	email: {
+	username: {
 		type: String,
 		unique: true,
 	},
@@ -35,6 +30,18 @@ schema.pre('save', async function (next) {
 
 schema.methods.verifyPassword = async function (password: string) {
 	return await matchPassword(password, this.password);
+};
+
+schema.methods.getAuthToken = function () {
+	return jwt.sign({ id: this._id }, JWT_SECRET, {
+		expiresIn: JWT_EXPIRE,
+	});
+};
+
+schema.methods.getRefreshToken = function () {
+	return jwt.sign({ id: this._id }, REFRESH_SECRET, {
+		expiresIn: REFRESH_EXPIRE,
+	});
 };
 
 const AccountDB = mongoose.model<IAccount>(AccountDB_name, schema);

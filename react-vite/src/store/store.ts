@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { StoreNames } from './config';
-import { default as CollectionsReducer } from './reducers/CollectionsReducer';
+import { default as CandidateReducer } from './reducers/CandidateReducer';
 
 const store = configureStore({
 	reducer: {
-		[StoreNames.COLLECTIONS]: CollectionsReducer,
+		[StoreNames.CANDIDATE]: CandidateReducer,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

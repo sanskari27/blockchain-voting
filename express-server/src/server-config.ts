@@ -5,18 +5,10 @@ import useragent from 'express-useragent';
 import fs from 'fs';
 import routes from './modules';
 
-import Logger from 'n23-logger';
 import { IS_PRODUCTION, IS_WINDOWS, Path } from './config/const';
-import { CustomError, ERRORS } from './errors';
-import { RespondFile } from './utils/ExpressUtils';
+import { CustomError } from './errors';
 
-const allowlist = [
-	'http://localhost:5173',
-	'http://localhost:3000',
-	'https://keethjewels.com',
-	'https://www.keethjewels.com',
-	'https://admin.keethjewels.com',
-];
+const allowlist = ['http://localhost:5173'];
 
 const corsOptionsDelegate = (req: any, callback: any) => {
 	let corsOptions;
@@ -68,43 +60,13 @@ export default function (app: Express) {
 		res.locals = {
 			...res.locals,
 		};
-		const { headers, body, url } = req;
-
-		Logger.http(url, {
-			type: 'request',
-			headers,
-			body,
-		});
 		next();
 	});
 
 	app.use(routes);
 
-	app.route('/media/:path/:filename').get((req, res, next) => {
-		try {
-			const path = __basedir + '/static/' + req.params.path + '/' + req.params.filename;
-			return RespondFile({
-				res,
-				filename: req.params.filename,
-				filepath: path,
-			});
-		} catch (err: unknown) {
-			return next(new CustomError(ERRORS.NOT_FOUND));
-		}
-	});
-
 	app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 		if (err instanceof CustomError) {
-			if (err.status === 500) {
-				Logger.http(res.locals.url, {
-					type: 'response-error',
-					status: 500,
-					response: err.error || err,
-					headers: req.headers,
-					body: req.body,
-				});
-			}
-
 			return res.status(err.status).json({
 				success: false,
 				status: 'error',
@@ -113,10 +75,6 @@ export default function (app: Express) {
 			});
 		}
 
-		Logger.error(`Internal Server Error`, err, {
-			type: 'error',
-			request_id: res.locals.request_id,
-		});
 		res.status(500).json({
 			success: false,
 			status: 'error',

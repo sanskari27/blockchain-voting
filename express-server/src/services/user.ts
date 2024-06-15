@@ -3,17 +3,18 @@ import { IDType } from '../types';
 
 export default class UserService {
 	private _user_id: IDType;
-	private _level: number;
+	private _username: string;
 
 	public constructor(account: IAccount) {
 		this._user_id = account._id;
-		this._level = account.userLevel;
+		this._username = account.username;
 	}
 
 	public get id(): IDType {
 		return this._user_id;
 	}
-	public get level(): number {
-		return this._level;
+
+	public get username(): string {
+		return this._username;
 	}
 }

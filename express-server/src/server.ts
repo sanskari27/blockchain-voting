@@ -5,7 +5,6 @@ dotenv.config();
 import express from 'express';
 import configServer from './server-config';
 
-import Logger from 'n23-logger';
 import connectDB from '../mongo';
 import { DATABASE_URL, PORT } from './config/const';
 
@@ -15,19 +14,19 @@ const app = express();
 configServer(app);
 connectDB(DATABASE_URL)
 	.then(async () => {
-		Logger.info('Running Status', 'Database connected');
+		console.log('Database connected');
 	})
 	.catch((err) => {
-		Logger.critical('Database Connection Failed', err);
+		console.error(err);
 		process.exit();
 	});
 
 const server = app.listen(PORT, async () => {
-	Logger.info('Running Status', `Server started on port ${PORT}`);
+	console.log(`Server running on port ${PORT}`);
 });
 
 process.setMaxListeners(0);
 process.on('unhandledRejection', (err: Error) => {
-	Logger.critical('Unhandled rejection', err);
+	console.error(err);
 	server.close(() => process.exit(1));
 });
